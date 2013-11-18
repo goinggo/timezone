@@ -79,37 +79,38 @@ import (
 
 //** CONSTANTS
 
-// Constants
 const (
 	_GOOGLE_URI   string = "https://maps.googleapis.com/maps/api/timezone/json?location=%f,%f&timestamp=%d&sensor=false"
 	_GEONAMES_URI string = "http://api.geonames.org/timezoneJSON?lat=%f&lng=%f&username=%s"
 )
 
-//** NEW TYPES
+//** TYPES
 
-// GoogleTimezone is the repsonse from the Google timezone API
-type GoogleTimezone struct {
-	DstOffset    float64 `bson:"dstOffset"`    // Offset for daylight-savings time in seconds. This will be zero if the time zone is not in Daylight Savings Time during the specified timestamp.
-	RawOffset    float64 `bson:"rawOffset"`    // Offset from UTC (in seconds) for the given location. This does not take into effect daylight savings.
-	Status       string  `bson:"status"`       // Indicates the status of the response.
-	TimezoneId   string  `bson:"timeZoneId"`   // Contains the ID of the time zone, such as "America/Los_Angeles" or "Australia/Sydney".
-	TimezoneName string  `bson:"timeZoneName"` // Contains the long form name of the time zone. This field will be localized if the language parameter is set. eg. "Pacific Daylight Time" or "Australian Eastern Daylight Time"
-}
+type (
+	// GoogleTimezone is the repsonse from the Google timezone API
+	GoogleTimezone struct {
+		DstOffset    float64 `bson:"dstOffset"`    // Offset for daylight-savings time in seconds. This will be zero if the time zone is not in Daylight Savings Time during the specified timestamp.
+		RawOffset    float64 `bson:"rawOffset"`    // Offset from UTC (in seconds) for the given location. This does not take into effect daylight savings.
+		Status       string  `bson:"status"`       // Indicates the status of the response.
+		TimezoneId   string  `bson:"timeZoneId"`   // Contains the ID of the time zone, such as "America/Los_Angeles" or "Australia/Sydney".
+		TimezoneName string  `bson:"timeZoneName"` // Contains the long form name of the time zone. This field will be localized if the language parameter is set. eg. "Pacific Daylight Time" or "Australian Eastern Daylight Time"
+	}
 
-// GeoNamesTimezone is the repsonse from the GeoNames timezone API
-type GeoNamesTimezone struct {
-	Time        string  `bson:"time"`        // The local current time.
-	CountryName string  `bson:"countryName"` // ISO 3166 country code name
-	CountryCode string  `bson:"countryCode"` // ISO 3166 country code
-	Sunset      string  `bson:"sunset"`      // Current days time for sunset
-	RawOffset   float64 `bson:"rawOffset"`   // The amount of time in hours to add to UTC to get standard time in this time zone.
-	DstOffset   float64 `bson:"dstOffset"`   // Offset to GMT at 1. July (deprecated)
-	GmtOffset   float64 `bson:"gmtOffset"`   // Offset to GMT at 1. January (deprecated)
-	Sunrise     string  `bson:"sunrise"`     // Current days time for sunrise
-	TimezoneId  string  `bson:"timezoneId"`  // The name of the timezone (according to olson).
-	Longitude   float64 `bson:"lng"`         // Longitude used for the call
-	Latitude    float64 `bson:"lat"`         // Latitude used for the call
-}
+	// GeoNamesTimezone is the repsonse from the GeoNames timezone API
+	GeoNamesTimezone struct {
+		Time        string  `bson:"time"`        // The local current time.
+		CountryName string  `bson:"countryName"` // ISO 3166 country code name
+		CountryCode string  `bson:"countryCode"` // ISO 3166 country code
+		Sunset      string  `bson:"sunset"`      // Current days time for sunset
+		RawOffset   float64 `bson:"rawOffset"`   // The amount of time in hours to add to UTC to get standard time in this time zone.
+		DstOffset   float64 `bson:"dstOffset"`   // Offset to GMT at 1. July (deprecated)
+		GmtOffset   float64 `bson:"gmtOffset"`   // Offset to GMT at 1. January (deprecated)
+		Sunrise     string  `bson:"sunrise"`     // Current days time for sunrise
+		TimezoneId  string  `bson:"timezoneId"`  // The name of the timezone (according to olson).
+		Longitude   float64 `bson:"lng"`         // Longitude used for the call
+		Latitude    float64 `bson:"lat"`         // Latitude used for the call
+	}
+)
 
 //** PUBLIC FUNCTIONS
 
