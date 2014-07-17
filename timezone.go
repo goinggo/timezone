@@ -111,8 +111,7 @@ type (
 )
 
 // RetrieveGoogleTimezone calls the Google API to retrieve the timezone for the lat/lng.
-func RetrieveGoogleTimezone(latitude float64, longitude float64) (*GoogleTimezone, error) {
-	var err error
+func RetrieveGoogleTimezone(latitude float64, longitude float64) (googleTimezone *GoogleTimezone, err error) {
 	defer catchPanic(&err)
 
 	uri := fmt.Sprintf(googleURI, latitude, longitude, time.Now().UTC().Unix())
@@ -129,7 +128,6 @@ func RetrieveGoogleTimezone(latitude float64, longitude float64) (*GoogleTimezon
 		return nil, err
 	}
 
-	var googleTimezone GoogleTimezone
 	if err = json.Unmarshal(rawDocument, &googleTimezone); err != nil {
 		return nil, err
 	}
@@ -142,38 +140,36 @@ func RetrieveGoogleTimezone(latitude float64, longitude float64) (*GoogleTimezon
 		return nil, fmt.Errorf("Error : No Timezone ID Provided")
 	}
 
-	return &googleTimezone, err
+	return googleTimezone, err
 }
 
 // RetrieveGeoNamesTimezone calls the GeoNames API to retrieve the timezone for the lat/lng.
-func RetrieveGeoNamesTimezone(latitude float64, longitude float64, userName string) (*GeoNamesTimezone, error) {
-	var err error
+func RetrieveGeoNamesTimezone(latitude float64, longitude float64, userName string) (geoNamesTimezone *GeoNamesTimezone, err error) {
 	defer catchPanic(&err)
 
 	uri := fmt.Sprintf(geonamesURI, latitude, longitude, userName)
 
 	resp, err := http.Get(uri)
 	if err != nil {
-		return nil, err
+		return geoNamesTimezone, err
 	}
 
 	defer resp.Body.Close()
 
 	rawDocument, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return geoNamesTimezone, err
 	}
 
-	var geoNamesTimezone GeoNamesTimezone
 	if err = json.Unmarshal(rawDocument, &geoNamesTimezone); err != nil {
-		return nil, err
+		return geoNamesTimezone, err
 	}
 
 	if len(geoNamesTimezone.TimezoneID) == 0 {
-		return nil, fmt.Errorf("Error : No Timezone ID Provided")
+		return geoNamesTimezone, fmt.Errorf("Error : No Timezone ID Provided")
 	}
 
-	return &geoNamesTimezone, err
+	return geoNamesTimezone, err
 }
 
 // CatchPanic is used to catch any Panic.
